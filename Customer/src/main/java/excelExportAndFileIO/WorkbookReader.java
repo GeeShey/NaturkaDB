@@ -33,7 +33,6 @@ public class WorkbookReader {
     Workbook guru99Workbook = null;
 
     //Find the file extension by splitting file name in substring  and getting only extension name
-    //test
 
     String fileExtensionName = fileName.substring(fileName.indexOf("."));
 
