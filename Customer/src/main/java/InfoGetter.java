@@ -5,7 +5,7 @@
 //Get the customer ids from int[] getCustomerIds
 //Get the stillSubscribed[] from boolean[] getStillSubscribed
 //Note:
-//		Sometimes a nullpointerException can be solved by clearing the contents of empty cells
+//		Sometimes a nullpointerException can be solved by clearing the contents of empty cells in the excel file 	
 
 import java.io.File;
 
@@ -14,8 +14,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-
-import org.apache.poi.ss.usermodel.Row;
 
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -41,7 +39,7 @@ public class InfoGetter {
 		int daysOverdue[] = new int[rowCount];
 		System.out.println("rows: " + rowCount);
 
-		// storing the daysOverdue valuse in an int
+		// storing the daysOverdue values in an int
 		for (int i = 0; i < rowCount; i++) {
 
 			daysOverdue[i] = (int) supplyInfoSheet.getRow(i + 1).getCell(4).getNumericCellValue();
@@ -53,7 +51,7 @@ public class InfoGetter {
 
 	}
 
-	public static int[] purchaseId() throws IOException {
+	public static int[] getPurchaseId() throws IOException {
 
 		initializer();
 		int rowCount = (supplyInfoSheet.getLastRowNum() - supplyInfoSheet.getFirstRowNum());

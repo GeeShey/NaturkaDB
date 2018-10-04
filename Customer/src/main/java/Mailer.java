@@ -7,21 +7,21 @@ public class Mailer {
 	
 	public static String subject,body;
 	public Mailer(String Sub,String  Body) {
-		subject=Sub;
-		body=Body;
+		subject="Automated Mail Test";
+		body="Do not reply to this mail";
 		
 	}
 
     private static String USER_NAME = "Naturkabot";  // GMail user name (just the part before "@gmail.com")
     private static String PASSWORD = "l@ndr0ver"; // GMail password
-    private static String RECIPIENT = "saishekhar7@gmail.com";
+    private static String RECIPIENT = "vedantshankar700@gmail.com";
 
     public static void main(String[] args) {
         String from = USER_NAME;
         String pass = PASSWORD;
         String[] to = { RECIPIENT }; // list of recipient email addresses
 
-        sendFromGMail(from, pass, to, subject, body);
+        sendFromGMail(from, pass, to, "Automated Mail", "Do not reply");
     }
 
     private static void sendFromGMail(String from, String pass, String[] to, String subject, String body) {
