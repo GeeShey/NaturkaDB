@@ -3,7 +3,9 @@
 //Get the daysPending till supply from int[] daysPendingTillSupply()
 //Get the purchase ids from int[] purchaseId()
 //Get the customer ids from int[] getCustomerIds
-
+//Get the stillSubscribed[] from boolean[] getStillSubscribed
+//Note:
+//		Sometimes a nullpointerException can be solved by clearing the contents of empty cells
 
 import java.io.File;
 
@@ -27,8 +29,8 @@ public class InfoGetter {
 	public static Workbook guru99Workbook;
 
 	public InfoGetter(String fName, String fPath) {
-		// fileName="Workbook1.xlsx";
-		// filePath="/Users/vediccoimbatore/Desktop";
+		fileName = fName;
+		filePath = fPath;
 	}
 
 	public static String sheetName = "SupplyInfo";
@@ -44,7 +46,7 @@ public class InfoGetter {
 
 			daysOverdue[i] = (int) supplyInfoSheet.getRow(i + 1).getCell(4).getNumericCellValue();
 
-			// System.out.println(daysOverdue[i]);
+			System.out.println(daysOverdue[i]);
 		}
 
 		return daysOverdue;
@@ -63,7 +65,7 @@ public class InfoGetter {
 
 			purchase_id[i] = (int) supplyInfoSheet.getRow(i + 1).getCell(0).getNumericCellValue();
 
-			 //System.out.println(purchase_id[i]);
+			// System.out.println(purchase_id[i]);
 		}
 
 		return purchase_id;
@@ -72,8 +74,6 @@ public class InfoGetter {
 
 	public static void initializer() throws IOException {
 		// testing purposes
-		fileName = "Workbook1.xlsx";
-		filePath = "/Users/vediccoimbatore/Desktop";
 
 		// Create an object of File class to open xlsx file
 
@@ -117,20 +117,16 @@ public class InfoGetter {
 
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static int[] getCustomerIds() throws IOException {
 
-		getCustomerIds(6);
-
-	}
-	
-	public static void getCustomerIds(int noOfEntries) throws IOException {
-		int customerIds[] = new int[noOfEntries];
-		//gets the customer ids in the order they are written in the excel file(not in accordance to the purchase ids)
-		//assuming that the purchase ids are unique and in sequential order in the sheet "PurchaseInfo"
+		// gets the customer ids in the order they are written in the excel file(not in
+		// accordance to the purchase ids)
+		// assuming that the purchase ids are unique and in sequential order in the
+		// sheet "PurchaseInfo"
 		initializer();
-		Sheet PurchaseInfoSheet= guru99Workbook.getSheet("PurchaseInfo");
-		
-		int rowCount = noOfEntries;
+		Sheet PurchaseInfoSheet = guru99Workbook.getSheet("PurchaseInfo");
+		int customerIds[] = new int[PurchaseInfoSheet.getLastRowNum()];
+		int rowCount = PurchaseInfoSheet.getLastRowNum();
 		System.out.println("rows: " + rowCount);
 
 		// storing the customer_ids values in an int
@@ -138,12 +134,33 @@ public class InfoGetter {
 
 			customerIds[i] = (int) PurchaseInfoSheet.getRow(i + 1).getCell(1).getNumericCellValue();
 
-			 //System.out.println(customerIds[i]);  
+			// System.out.println(customerIds[i]);
 		}
 
-		//return customerIds;
+		return customerIds;
 
 	}
 
+	public static boolean[] getStillSubscribed() throws IOException {
+		// gets the customer ids in the order they are written in the excel file(not in
+		// accordance to the purchase ids)
+		// assuming that the purchase ids are unique and in sequential order in the
+		// sheet "PurchaseInfo"
+		initializer();
+		int rowCount = (supplyInfoSheet.getLastRowNum() - supplyInfoSheet.getFirstRowNum());
+		boolean stillSubscribed[] = new boolean[rowCount];
+		System.out.println("rows: " + rowCount);
+
+		// storing the daysOverdue valuse in an int
+		for (int i = 0; i < rowCount; i++) {
+
+			stillSubscribed[i] = supplyInfoSheet.getRow(i + 1).getCell(5).getBooleanCellValue();
+
+			// System.out.println(purchase_id[i]);
+		}
+
+		return stillSubscribed;
+
+	}
 
 }
