@@ -1,3 +1,8 @@
+//This class gets the variable "daysOverDue" along with the purchase ids from the sheet "supplyInfo"
+//This class also gets the customer ids from the sheet "PurchaseInfo"
+//Get the daysPending till supply from int[] daysPendingTillSupply()
+//Get the purchase ids from int[] purchaseId()
+//Get the customer ids from int[] getCustomerIds
 
 
 import java.io.File;
@@ -16,11 +21,12 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class SupplyInfoGetter {
+public class InfoGetter {
 	public static String fileName, filePath;
-	public static Sheet supplyinfoSheet;
+	public static Sheet supplyInfoSheet;
+	public static Workbook guru99Workbook;
 
-	public SupplyInfoGetter(String fName, String fPath) {
+	public InfoGetter(String fName, String fPath) {
 		// fileName="Workbook1.xlsx";
 		// filePath="/Users/vediccoimbatore/Desktop";
 	}
@@ -28,15 +34,15 @@ public class SupplyInfoGetter {
 	public static String sheetName = "SupplyInfo";
 
 	public static int[] daysPendingTillSupply() throws IOException {
-		inializer();
-		int rowCount = (supplyinfoSheet.getLastRowNum() - supplyinfoSheet.getFirstRowNum());
+		initializer();
+		int rowCount = (supplyInfoSheet.getLastRowNum() - supplyInfoSheet.getFirstRowNum());
 		int daysOverdue[] = new int[rowCount];
 		System.out.println("rows: " + rowCount);
 
 		// storing the daysOverdue valuse in an int
 		for (int i = 0; i < rowCount; i++) {
 
-			daysOverdue[i] = (int) supplyinfoSheet.getRow(i + 1).getCell(4).getNumericCellValue();
+			daysOverdue[i] = (int) supplyInfoSheet.getRow(i + 1).getCell(4).getNumericCellValue();
 
 			// System.out.println(daysOverdue[i]);
 		}
@@ -47,15 +53,15 @@ public class SupplyInfoGetter {
 
 	public static int[] purchaseId() throws IOException {
 
-		inializer();
-		int rowCount = (supplyinfoSheet.getLastRowNum() - supplyinfoSheet.getFirstRowNum());
+		initializer();
+		int rowCount = (supplyInfoSheet.getLastRowNum() - supplyInfoSheet.getFirstRowNum());
 		int purchase_id[] = new int[rowCount];
 		System.out.println("rows: " + rowCount);
 
 		// storing the daysOverdue valuse in an int
 		for (int i = 0; i < rowCount; i++) {
 
-			purchase_id[i] = (int) supplyinfoSheet.getRow(i + 1).getCell(0).getNumericCellValue();
+			purchase_id[i] = (int) supplyInfoSheet.getRow(i + 1).getCell(0).getNumericCellValue();
 
 			 //System.out.println(purchase_id[i]);
 		}
@@ -64,7 +70,7 @@ public class SupplyInfoGetter {
 
 	}
 
-	public static void inializer() throws IOException {
+	public static void initializer() throws IOException {
 		// testing purposes
 		fileName = "Workbook1.xlsx";
 		filePath = "/Users/vediccoimbatore/Desktop";
@@ -78,7 +84,7 @@ public class SupplyInfoGetter {
 
 		FileInputStream inputStream = new FileInputStream(file);
 
-		Workbook guru99Workbook = null;
+		guru99Workbook = null;
 
 		// Find the file extension by splitting file name in substring and getting only
 		// extension name
@@ -107,14 +113,37 @@ public class SupplyInfoGetter {
 
 		// Read sheet inside the workbook by its name
 
-		supplyinfoSheet = guru99Workbook.getSheet(sheetName);
+		supplyInfoSheet = guru99Workbook.getSheet(sheetName);
 
 	}
 
 	public static void main(String[] args) throws IOException {
 
-		purchaseId();
+		getCustomerIds(6);
 
 	}
+	
+	public static void getCustomerIds(int noOfEntries) throws IOException {
+		int customerIds[] = new int[noOfEntries];
+		//gets the customer ids in the order they are written in the excel file(not in accordance to the purchase ids)
+		//assuming that the purchase ids are unique and in sequential order in the sheet "PurchaseInfo"
+		initializer();
+		Sheet PurchaseInfoSheet= guru99Workbook.getSheet("PurchaseInfo");
+		
+		int rowCount = noOfEntries;
+		System.out.println("rows: " + rowCount);
+
+		// storing the customer_ids values in an int
+		for (int i = 0; i < rowCount; i++) {
+
+			customerIds[i] = (int) PurchaseInfoSheet.getRow(i + 1).getCell(1).getNumericCellValue();
+
+			 //System.out.println(customerIds[i]);  
+		}
+
+		//return customerIds;
+
+	}
+
 
 }
